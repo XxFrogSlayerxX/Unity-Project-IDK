@@ -37,6 +37,8 @@ public class PlayerMovement : MonoBehaviour
 	
 	void Update()
 	{
+		SpeedControl();
+		
 		grounded = Physics.Raycast(transform.position, Vector3.down, playerHeight * 0.5f + 0.2f, whatIsGround);
 		
 		
@@ -58,6 +60,19 @@ public class PlayerMovement : MonoBehaviour
 		
 		rb.AddForce(moveDir.normalized * speed * 10f, ForceMode.Force);
 		
+		
+	}
+	
+	private void SpeedControl()
+	{
+		Vector3 flatVel = new Vector3(rb.linearVelocity.x, 0f, rb.linearVelocity.z);
+		
+		if(flatVel.magnitude > speed)
+		{
+			
+			Vector3 limitedVel = flatVel.normalized * speed;
+			rb.linearVelocity = new Vector3(limitedVel.x, rb.linearVelocity.y, limitedVel.z);
+		}
 		
 	}
 	
